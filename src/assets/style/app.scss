@@ -1,0 +1,12 @@
+@import './global.scss';
+
+#header {
+  background-color: #FFFFFF;
+  height: 75px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  p {
+    margin: 0;
+  }
+}
