@@ -3,11 +3,11 @@ import React, {Component} from 'react';
 export default class InputForm extends Component {
   constructor(props) {
     super(props);
-    this.state = {...this.props, name:'', price: null}
+    this.state = {...this.props, name: null, price: null}
   }
 
   _onSubmit = (borrow) => {
-    if(!this.state.name || this.state.price){
+    if(!this.state.name || !this.state.price){
       this.setState({error: 'バリデーションエラー'});
       return
     }
@@ -18,14 +18,12 @@ export default class InputForm extends Component {
     return (
       <div>
         <p>{this.state.error}</p>
-        <label>誰に</label>
         <input
           type="text"
           name="who"
           value={this.state.name}
           onChange={(name) => this.setState({name: name.target.value})}
         />
-        <label>金額</label>
         <input
           type="tel"
           name="price"
