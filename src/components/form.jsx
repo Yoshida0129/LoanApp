@@ -3,30 +3,41 @@ import React, {Component} from 'react';
 export default class InputForm extends Component {
   constructor(props) {
     super(props);
-    this.state = {...this.props, name: null, price: null}
+    this.state = {date: this.props.date, name: null, price: null}
   }
 
   _onSubmit = (borrow) => {
     if(!this.state.name || !this.state.price){
-      this.setState({error: 'バリデーションエラー'});
+      this.setState({error: '未入力'});
       return
     }
-    this.state.add(this.state, borrow)
-  }
+    const input_price = Number(this.state.price);
+    if(!input_price){
+      this.setState({error: '半角数字で入力してください'});
+      return
+    }
+    if(input_price < 1){
+      this.setState({error: '正常な数値を入力してください'})
+    }
+    this.setState({price: input_price, error: null});
+    this.props._add(this.state, borrow);
+  };
 
   render() {
     return (
-      <div>
+      <article>
         <p>{this.state.error}</p>
         <input
           type="text"
           name="who"
           value={this.state.name}
+          maxLength="10"
           onChange={(name) => this.setState({name: name.target.value})}
         />
         <input
           type="tel"
           name="price"
+          maxLength="10"
           value={this.state.price}
           onChange={(price) => this.setState({price: price.target.value})}
         />
@@ -48,7 +59,7 @@ export default class InputForm extends Component {
           value="貸した"
           onClick={() => this._onSubmit(false)}
         />
-      </div>
+      </article>
     )
   }
 }
