@@ -36,15 +36,9 @@ export default class Home extends Component {
     return time.format('YYYY-MM-DD')
   };
 
-  _clear = () => {
-    store.clear();
-    this.setState({borrow: [], lend:[]})
-  };
-
   render(){
     return(
       <div id="home-body">
-        {/*<button onClick={this._clear}>clear</button>*/}
         <InputForm
           _add={(item, borrow) => this._add(item, borrow)}
           date={this._date()}
