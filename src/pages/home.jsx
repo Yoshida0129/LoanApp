@@ -5,52 +5,56 @@ import moment from 'moment';
 import InputForm from '../components/form';
 import OutputList from '../components/list';
 
+const store = require('store');
+
 export default class Home extends Component {
   constructor(props){
     super(props);
-
+    let borrow = store.get('borrow');
+    let lend = store.get('lend');
+    borrow = borrow ? borrow : [];
+    lend = lend ? lend : [];
     this.state = {
-      borrow: [],
-      lend: []
-    }
+      borrow: borrow ? borrow : [] ,
+      lend: lend ? lend : []
+    };
   }
 
-  _add = (item, borrow) => {
-    this.setState(
+  _add = async (item, borrow) => {
+    await this.setState(
     borrow ?
       {borrow: [...this.state.borrow, item]} :
       {lend: [...this.state.lend, item]}
     );
+    store.set('borrow', this.state.borrow);
+    store.set('lend', this.state.lend);
+    console.log(this.state)
   };
 
   _date = () => {
     let time = new moment();
     return time.format('YYYY-MM-DD')
   };
-  componentDidMount(){
-    this.setState({
-      borrow: localStorage.getItem('borrow'),
-      lend: localStorage.getItem('lend')
-    });
-  }
-  componentWillUpdate(){
-    localStorage.setItem('borrow', this.state.borrow);
-    localStorage.setItem('lend', this.state.lend);
-  }
+
+  _clear = () => {
+    store.clear();
+    this.setState({borrow: [], lend:[]})
+  };
 
   render(){
     return(
       <div id="home-body">
+        {/*<button onClick={this._clear}>clear</button>*/}
         <InputForm
           _add={(item, borrow) => this._add(item, borrow)}
           date={this._date()}
         />
         <OutputList
-          list={this.state.borrow ? this.state.borrow : [1,2]}
+          list={this.state.borrow ? this.state.borrow : [{name: ''}]}
           borrow={true}
         />
         <OutputList
-          list={this.state.lend ? this.state.borrow : [1,2]}
+          list={this.state.lend ? this.state.lend : [{name: ''}]}
           borrow={false}
         />
       </div>

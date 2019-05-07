@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 
 export default class InputForm extends Component {
+  error = null;
   constructor(props) {
     super(props);
     this.state = {date: this.props.date, name: null, price: null}
@@ -8,18 +9,19 @@ export default class InputForm extends Component {
 
   _onSubmit = (borrow) => {
     if(!this.state.name || !this.state.price){
-      this.setState({error: '未入力'});
+      this.error = '未入力';
       return
     }
     const input_price = Number(this.state.price);
     if(!input_price){
-      this.setState({error: '半角数字で入力してください'});
+      this.error = '半角数字で入力してください';
       return
     }
     if(input_price < 1){
-      this.setState({error: '正常な数値を入力してください'})
+      this.error = '正常な数値を入力してください'
     }
-    this.setState({price: input_price, error: null});
+    this.setState({price: input_price});
+    this.error = null;
     this.props._add(this.state, borrow);
   };
 
